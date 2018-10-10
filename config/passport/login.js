@@ -28,7 +28,7 @@ module.exports = (passport, user) => {
         User.findOne({
           where: { username: username }
         })
-          .then((user) => {
+          .then(user => {
             if (!user) {
               console.log(`${username} not found`);
               return done(null, false, {

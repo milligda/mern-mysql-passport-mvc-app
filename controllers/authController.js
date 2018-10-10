@@ -25,7 +25,7 @@ module.exports = {
   },
   logout: (req, res) => {
     if (req.user) {
-      req.session.destroy((err) => {
+      req.session.destroy(err => {
         res.json({ message: "user has been logged out" });
       });
     } else {
