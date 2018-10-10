@@ -6,8 +6,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const passport = require("passport");
-const mongoStore = require("connect-mongo")(session);
-const dbConnection = require("./database");
+const db = require("./models");
 const routes = require("./routes");
 
 // ==============================================================================
@@ -32,7 +31,6 @@ if (process.env.NODE_ENV === "production") {
 app.use(
   session({
     secret: "ur-secret-key",
-    store: new mongoStore({ mongooseConnection: dbConnection }),
     resave: true,
     saveUninitialized: true
   })
@@ -51,12 +49,21 @@ app.use(routes);
 // Initialize Passport Strategy
 // ==============================================================================
 
-require("./config/passport")(passport);
+require("./config/passport")(passport, db.User);
+
+// ==============================================================================
+// Database Sync Options
+// ==============================================================================
+
+// set to true to clear the database
+const syncOptions = { force: false };
 
 // ==============================================================================
 // Server
 // ==============================================================================
 
-app.listen(PORT, function() {
-  console.log(`🌎 ==> Server now on port ${PORT}!`);
+db.sequelize.sync(syncOptions).then(() => {
+  app.listen(PORT, function() {
+    console.log(`🌎 ==> Server now on port ${PORT}!`);
+  });
 });

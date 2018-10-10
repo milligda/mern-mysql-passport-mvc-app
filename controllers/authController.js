@@ -2,8 +2,6 @@
 // Dependencies & Required Files
 // ==============================================================================
 
-const db = require("../database/models");
-
 // ==============================================================================
 // AuthController Methods
 // ==============================================================================
@@ -13,7 +11,7 @@ module.exports = {
     console.log("signed up", req.user);
     const userInfo = {
       username: req.user.username,
-      id: req.user._id
+      id: req.user.id
     };
     res.send(userInfo);
   },
@@ -21,15 +19,15 @@ module.exports = {
     console.log("logged in", req.user);
     const userInfo = {
       username: req.user.username,
-      id: req.user._id
+      id: req.user.id
     };
     res.send(userInfo);
   },
   logout: (req, res) => {
     if (req.user) {
-      let userId = req.user._id;
-      req.logout();
-      res.json({ message: "logging out", userId: userId });
+      req.session.destroy((err) => {
+        res.json({ message: "user has been logged out" });
+      });
     } else {
       res.send({ message: "no user to logout" });
     }

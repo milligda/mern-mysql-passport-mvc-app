@@ -4,13 +4,14 @@
 
 const bCrypt = require("bcrypt-nodejs");
 const LocalStrategy = require("passport-local").Strategy;
-const User = require("../../database/models/User");
 
 // ==============================================================================
 // PassPort Signup Strategy
 // ==============================================================================
 
-module.exports = passport => {
+module.exports = (passport, user) => {
+  const User = user;
+
   const createHash = password => {
     return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
   };
@@ -24,35 +25,43 @@ module.exports = passport => {
         passReqToCallback: true
       },
       (req, username, password, done) => {
-        findOrCreateUser = () => {
-          User.findOne({ username: username }, (err, user) => {
-            if (err) {
-              console.log("Error in Signup: " + err);
-              return done(err);
-            }
-
+        User.findOne({
+          where: {
+            username: username
+          }
+        })
+          .then(user => {
             if (user) {
               console.log("User already exists");
-              return done(null, false);
+              return done(null, false, {
+                message: "That username is already taken"
+              });
             } else {
-              const newUser = new User();
               const hashPassword = createHash(password);
 
-              newUser.username = username;
-              newUser.password = hashPassword;
+              const data = {
+                username: username,
+                password: hashPassword
+              };
 
-              newUser.save(err => {
-                if (err) {
-                  console.log(`Error in saving user: ${err}`);
-                  throw err;
-                }
-
-                return done(null, newUser);
-              });
+              User.create(data)
+                .then((newUser, created) => {
+                  return done(null, newUser);
+                })
+                .catch(err => {
+                  console.log("Error creating new user: " + err);
+                  return done(null, false, {
+                    message: "something went wrong with your signup"
+                  });
+                });
             }
+          })
+          .catch(err => {
+            console.log("Error in Signup: " + err);
+            return done(null, false, {
+              message: "something went wrong with your signup"
+            });
           });
-        };
-        process.nextTick(findOrCreateUser);
       }
     )
   );

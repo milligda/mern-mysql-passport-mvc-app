@@ -1,4 +1,4 @@
-# MERN (MongoDB, Express, React, Node) App with Passport user authentication
+# MERN (MySQL, Express, React, Node) App with Passport User Authentication
 
 ## About This Boilerplate
 
@@ -6,19 +6,40 @@ This setup allows for a Node/Express/React app integrating Passport's local user
 
 The front-end React app will auto-reload as it's updated via webpack dev server, and the backend Express app will auto-reload independently with nodemon.
 
-Passport is utilized for the User Authentication (Login and Signup) and is connected with the MongoDB Users collection.
+Passport is utilized for the User Authentication (Login and Signup) and is connected with the MySQL User model.
 
 The application is set up using a MVC (model-view-controller) structure.  
 
 ## Starting the app locally
 
-Configure the database:
+**Configure the MySQL database:**
 
 - In server.js set the secret key for the passport session
-- In database/index.js replace the default databaseName with the name of your database
+- In config/config.js - replace the development username, password, and database name to match your local MySQL user information and application database
 
+**Create the MySQL database:**
 
-Install the front and backend dependencies:
+Unlike Mongoose (with MongoDB), Sequelize will not automatically create a MySQL database if it does not already exist. Given that, the first step is to create the database your application will use. If you typically use MySQL as part of MAMP or another similar program, be sure to start that program first. 
+
+You can create the database using a program such as MySQL Workbench or from the command line. Below are the steps to create the database using the command line. 
+
+ - Log into MySQL using the below command. Replace {username} with your own username (e.g. root)
+
+ ```
+ mysql -u {username} -p
+ ```
+
+ - Type in the MySQL user password when prompted
+ - You should now be logged into the MySQL Monitor.  
+ - Create the database using the below command. Replace {dbname} with your application's database name
+
+ ```
+ CREATE DATABASE {dbname};
+ ```
+
+ - The database should now exist so you can close out of the MySQL Monitor. 
+
+**Install the front and backend dependencies:**
 
 - While in the root directory, run the following command to install node modules within the server and the client folder:
 
@@ -33,3 +54,5 @@ yarn start
 ```
 
 Your app should now be running on <http://localhost:3000>. The Express server should intercept any AJAX requests from the client.
+
+********************** STEPS **********************

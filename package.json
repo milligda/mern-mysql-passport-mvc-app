@@ -1,7 +1,7 @@
 {
-  "name": "mern-passport-mcv",
+  "name": "mern-mysql-passport-mcv",
   "version": "1.0.0",
-  "description": "Bootstrap MERN application with Passport authentication",
+  "description": "Bootstrap MERN application with Passport authentication - MySQL database",
   "main": "server.js",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
@@ -23,14 +23,14 @@
     "axios": "^0.18.0",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.18.3",
-    "connect-mongo": "^2.0.1",
     "express": "^4.15.4",
     "express-session": "^1.15.6",
     "if-env": "^1.0.4",
-    "mongoose": "^5.3.1",
+    "mysql2": "^1.6.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
-    "react-router-dom": "^4.3.1"
+    "react-router-dom": "^4.3.1",
+    "sequelize": "^4.39.0"
   }
 }
