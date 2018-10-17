@@ -54,3 +54,7 @@ yarn start
 ```
 
 Your app should now be running on <http://localhost:3000>. The Express server should intercept any AJAX requests from the client.
+
+## Demo
+
+You can see a working demo at <https://mern-mysql-bootstrap.herokuapp.com/>
